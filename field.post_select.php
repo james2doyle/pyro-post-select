@@ -37,6 +37,18 @@ class Field_post_select
 		return sprintf("<div id=\"%s_post_select\" class=\"post_select\">%s</div>", $data['form_slug'], $dropdown);
 	}
 
+	public function pre_output_plugin($value, $data)
+	{
+		$post = $this->CI->blog_m->get($value);
+		if ($post) {
+			// Full URL for convenience.
+			$post->url = site_url('blog/'.date('Y/m', $post->created_on).'/'.$post->slug);
+			return $post;
+		} else {
+			return false;
+		}
+	}
+
 	public function event($field)
 	{
 		// add js and css folders if you need this
